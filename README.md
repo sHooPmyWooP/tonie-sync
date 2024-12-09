@@ -25,7 +25,7 @@ This package requires these additional dependencies:
 from tonie_sync import SyncService
 
 sync_service = SyncService()  # Create a new SyncService instance with settings from environment variables
-sync_service.sync()  # Sync the Spotify playlists to the creative tonies
+sync_service.sync(query=query, creative_tonie_name=creative_tonie_name)  # Sync the Spotify playlists to the creative tonies
 ```
 
 ## Environment Variables
