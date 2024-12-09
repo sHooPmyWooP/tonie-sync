@@ -4,11 +4,11 @@ version = "0.1.0"
 description = "A package to sync Spotify playlists to creative tonies."
 authors = ["Anonymous <anonymous@xyz.com>"]
 readme = "README.md"
-license = "Proprietary"
+license = "MIT"
 include = ["src/tonie_sync/py.typed"]
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.13"
+python = ">=3.12,<3.14"
 ffmpy = "^0.4.0"
 music-tag = "^0.4.3"
 pillow = "^10.4.0"
@@ -16,7 +16,7 @@ protobuf = "==3.*"
 tqdm = "^4.66.4"
 tonie-api = "^0.1.1"
 click = "^8.1.7"
-pydantic = {extras = ["email"], version = "^2.8.2"}
+pydantic = { extras = ["email"], version = "^2.8.2" }
 pydantic-settings = "^2.4.0"
 spotdl = "^4.2.10"
 
