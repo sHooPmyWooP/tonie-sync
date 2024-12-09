@@ -28,6 +28,7 @@ jobs:
         run: poetry install
 
       - name: Get latest version from PyPI
+        id: get_latest_version
         run: |
           latest_version=$(curl -s https://pypi.org/pypi/tonie_sync/json | jq -r .info.version)
           echo "Latest version on PyPI: $latest_version"
@@ -35,7 +36,9 @@ jobs:
 
       - name: Build package
         run: |
+          echo "Current version: ${{ steps.get_latest_version.outputs.latest_version }}"
           poetry version ${{ steps.get_latest_version.outputs.latest_version }}
+          echo "Bumping version"
           poetry version patch
           poetry build
 
