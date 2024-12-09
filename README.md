@@ -30,13 +30,11 @@ sync_service.sync()  # Sync the Spotify playlists to the creative tonies
 
 ## Environment Variables
 
-| Environment Variable | Description                      | Example Value                                         |
-| -------------------- | -------------------------------- | ----------------------------------------------------- |
-| SPOTIFY_USERNAME     | Spotify account username         | 123456789                                             |
-| SPOTIFY_PASSWORD     | Spotify account password         | this_is_very_secret                                   |
-| TONIE_USERNAME       | Tonie account email              | my_email@provider.com                                 |
-| TONIE_PASSWORD       | Tonie account password           | another_secret                                        |
-| TONIE_HOUSEHOLD      | Name of the Tonie household      | My Household                                          |
-| CREATIVE_TONIE_NAME  | Name of the creative Tonie       | Creative-Tonie                                        |
-| SYNC_URL             | URL to the Spotify playlist      | https://open.spotify.com/playlist/poasdfa0s08sa76d5f9 |
-| target_directory            | Path to the local data directory | ./.local                                              |
+| Environment Variable  | Description                      | Example Value                                         |
+| --------------------- | -------------------------------- | ----------------------------------------------------- |
+| SPOTIFY_CLIENT_ID     | Spotify account username         | 123456789                                             |
+| SPOTIFY_CLIENT_SECRET | Spotify account password         | this_is_very_secret                                   |
+| TONIE_USERNAME        | Tonie account email              | my_email@provider.com                                 |
+| TONIE_PASSWORD        | Tonie account password           | another_secret                                        |
+| TONIE_HOUSEHOLD       | Name of the Tonie household      | My Household                                          |
+| target_directory      | Path to the local data directory | ./.local                                              |

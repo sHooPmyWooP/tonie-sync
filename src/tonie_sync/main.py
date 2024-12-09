@@ -10,12 +10,13 @@ logging.basicConfig(
 )
 
 
-def main(query: str):
+def main(query: str, creative_tonie_name: str):
     """Sync the files to the creative tonie based on the configuration."""
     sync_service = SyncService()
-    sync_service.sync(query)
+    sync_service.sync(query=query, creative_tonie_name=creative_tonie_name)
 
 
 if __name__ == "__main__":
     query = "https://open.spotify.com/playlist/2nvhh0bzHb6wdO1yNGZTaY"
-    main(query)
+    creative_tonie_name = "Kreativ-Tonie"
+    main(query=query, creative_tonie_name=creative_tonie_name)

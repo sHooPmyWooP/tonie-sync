@@ -14,7 +14,6 @@ class SyncServiceConfig(BaseSettings):
     tonie_username: EmailStr
     tonie_password: str
     tonie_household: str
-    creative_tonie_name: str
     target_directory: Path
 
     @field_validator("target_directory", mode="before")
@@ -25,7 +24,7 @@ class SyncServiceConfig(BaseSettings):
 class SyncService(BaseModel):
     config: SyncServiceConfig = SyncServiceConfig()
 
-    def sync(self, query: str):
+    def sync(self, creative_tonie_name: str, query: str):
         spotify_client = SpotDLClient(
             client_id=self.config.spotify_client_id,
             client_secret=self.config.spotify_client_secret,
@@ -43,4 +42,4 @@ class SyncService(BaseModel):
 
         download_tracks_metadata = spotify_client.search_and_download(query=query)
 
-        tonie_client.update_creative_tonie(self.config.creative_tonie_name, download_tracks_metadata)
+        tonie_client.update_creative_tonie(creative_tonie_name, download_tracks_metadata)
