@@ -33,9 +33,10 @@ class TonieClient:
 
     def update_creative_tonie(self, creative_tonie_name: str, tracks_metadata: list[TrackMetadata]):
         creative_tonie = self.get_creative_tonie_by_name(creative_tonie_name)
-        track_file_names = [track.artist_and_name for track in tracks_metadata]
-        self.remove_orphaned_chapters(creative_tonie, track_file_names)
-        self.upload_tracks_to_creative_tonie(creative_tonie_name, tracks_metadata)
+        track_file_names = [str(track.filename) for track in tracks_metadata]
+        missing_chapters = self.remove_orphaned_chapters(creative_tonie, track_file_names)
+        missing_chapters_metadata = [track for track in tracks_metadata if track.filename in missing_chapters]
+        self.upload_tracks_to_creative_tonie(creative_tonie_name, missing_chapters_metadata)
         self.sort_chapters(creative_tonie_name, tracks_metadata)
 
     def get_creative_tonie_by_name(self, creative_tonie_name: str) -> CreativeTonie:
@@ -59,6 +60,14 @@ class TonieClient:
         return creative_tonie
 
     def remove_orphaned_chapters(self, creative_tonie, track_file_names: list[str]):
+        """Remove orphaned chapters from a creative tonie.
+
+        Args:
+            creative_tonie: The creative tonie to remove orphaned chapters from.
+            track_file_names: The list of track file names to keep.
+
+        Returns:
+            list[str]: The list of track file names that are missing on the creative tonie."""
         logging.info("Removing orphaned chapters from creative tonie...")
         chapters = creative_tonie.chapters
         chapters_to_keep = [chapter for chapter in chapters if chapter.title in track_file_names]
@@ -68,22 +77,25 @@ class TonieClient:
                 [chapter.title for chapter in chapters_to_keep])}"
             )
             self.api.sort_chapter_of_tonie(creative_tonie, chapters_to_keep)
+            chapter_titles = [chapter.title for chapter in chapters]
+            missing_chapters = [track for track in track_file_names if track not in chapter_titles]
         else:
             logging.info("No chapters to keep found! Deleting all chapters...")
             self.api.clear_all_chapter_of_tonie(creative_tonie)
-        return chapters
+            missing_chapters = track_file_names
+        return missing_chapters
 
     def sort_chapters(self, creative_tonie_name, tracks_metadata):
         logging.info("Sorting chapters...")
         chapters_sorted = False
         creative_tonie = self.get_creative_tonie_by_name(creative_tonie_name)
         for num, track_metadata in enumerate(tracks_metadata):
-            oldchapterIndex = next(
+            old_chapter_index = next(
                 (i for i, item in enumerate(creative_tonie.chapters) if item.title == track_metadata.name),
                 -1,
             )
-            if oldchapterIndex != -1 and num != oldchapterIndex:
-                creative_tonie.chapters.insert(num, creative_tonie.chapters.pop(oldchapterIndex))
+            if old_chapter_index != -1 and num != old_chapter_index:
+                creative_tonie.chapters.insert(num, creative_tonie.chapters.pop(old_chapter_index))
                 chapters_sorted = True
         if chapters_sorted:
             logging.info("Sorting changed...")
@@ -117,10 +129,14 @@ class TonieClient:
             return
 
         logging.info(f"... uploading '{track_metadata.artist_and_name}' to creative tonie")
-        self.api.upload_file_to_tonie(
-            creative_tonie,
-            track_metadata.download_path,
-            track_metadata.artist_and_name,
-        )
+        try:
+            self.api.upload_file_to_tonie(
+                creative_tonie,
+                track_metadata.download_path,
+                str(track_metadata.filename),
+            )
+        except FileNotFoundError:
+            logging.error(f"... file not found: {track_metadata.download_path}")
+            return
         tonie_seconds_remaining = tonie_seconds_remaining - track_metadata.duration_seconds
         logging.info(f"... upload complete! => {format_seconds(tonie_seconds_remaining)} free")

@@ -1,8 +1,7 @@
 import logging
-
 import sys
 
-from tonie_sync.sync_service import SyncService
+from .sync_service import SyncService
 
 logging.basicConfig(
     stream=sys.stdout,
@@ -11,11 +10,12 @@ logging.basicConfig(
 )
 
 
-def main():
+def main(query: str):
     """Sync the files to the creative tonie based on the configuration."""
     sync_service = SyncService()
-    sync_service.sync()
+    sync_service.sync(query)
 
 
 if __name__ == "__main__":
-    main()
+    query = "https://open.spotify.com/playlist/2nvhh0bzHb6wdO1yNGZTaY"
+    main(query)

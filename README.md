@@ -39,4 +39,4 @@ sync_service.sync()  # Sync the Spotify playlists to the creative tonies
 | TONIE_HOUSEHOLD      | Name of the Tonie household      | My Household                                          |
 | CREATIVE_TONIE_NAME  | Name of the creative Tonie       | Creative-Tonie                                        |
 | SYNC_URL             | URL to the Spotify playlist      | https://open.spotify.com/playlist/poasdfa0s08sa76d5f9 |
-| DATA_PATH            | Path to the local data directory | ./.local                                              |
+| target_directory            | Path to the local data directory | ./.local                                              |

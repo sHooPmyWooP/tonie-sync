@@ -1,3 +1,3 @@
-from .track_metadata import SpotifyTrackMetadata
+from .track_metadata import SpotDLTrackMetadata, SpotifyTrackMetadata
 
-__all__ = ["SpotifyTrackMetadata"]
+__all__ = ["SpotifyTrackMetadata", "SpotDLTrackMetadata"]
