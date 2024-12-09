@@ -27,8 +27,17 @@ jobs:
       - name: Install dependencies
         run: poetry install
 
+      - name: Get latest version from PyPI
+        run: |
+          latest_version=$(curl -s https://pypi.org/pypi/tonie_sync/json | jq -r .info.version)
+          echo "Latest version on PyPI: $latest_version"
+          echo "::set-output name=latest_version::$latest_version"
+
       - name: Build package
-        run: poetry build
+        run: |
+          poetry version ${{ steps.get_latest_version.outputs.latest_version }}
+          poetry version patch
+          poetry build
 
       - name: Publish to PyPI
         run: |
