@@ -6,6 +6,7 @@ authors = ["Anonymous <anonymous@xyz.com>"]
 readme = "README.md"
 license = "MIT"
 include = ["src/tonie_sync/py.typed"]
+homepage = "https://github.com/sHooPmyWooP/tonie_sync"
 
 [tool.poetry.dependencies]
 python = ">=3.12,<3.14"
