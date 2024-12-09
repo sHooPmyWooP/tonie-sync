@@ -9,7 +9,7 @@ include = ["src/tonie_sync/py.typed"]
 homepage = "https://github.com/sHooPmyWooP/tonie-sync"
 
 [tool.poetry.dependencies]
-python = ">=3.12,<3.14"
+python = ">=3.10,<3.14"
 ffmpy = "^0.4.0"
 music-tag = "^0.4.3"
 pillow = "^10.4.0"
