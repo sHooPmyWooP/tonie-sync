@@ -1,3 +1,4 @@
+import asyncio
 import logging
 import os
 
@@ -45,6 +46,12 @@ class SyncService:
         if not os.path.exists(self.target_directory):
             logging.info(f"Creating download folder {self.target_directory}")
             os.makedirs(self.target_directory)
+
+        try:
+            loop = asyncio.get_event_loop()
+        except RuntimeError:
+            loop = asyncio.new_event_loop()
+            asyncio.set_event_loop(loop)
 
         download_tracks_metadata = self.spotify_client.search_and_download(query=query)
 
