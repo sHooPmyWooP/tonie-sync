@@ -17,7 +17,7 @@ class TrackMetadata(BaseModel):
     duration_ms: int
     album_name: str | None = None
     image_url: str | None = None
-    release_year: str | None = None
+    release_year: int | None = None
     disc_number: int | None = None
     track_number: int | None = None
     id: str | None = None
