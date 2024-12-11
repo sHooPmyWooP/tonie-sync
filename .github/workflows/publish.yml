@@ -27,5 +27,5 @@ jobs:
       - name: Build package
         run: uv build
 
-      - name: Install dependencies
+      - name: Publish package
         run: uv publish --token ${{ secrets.PYPI_TOKEN }}
