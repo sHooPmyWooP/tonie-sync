@@ -21,28 +21,11 @@ jobs:
         with:
           python-version: '3.12'
 
-      - name: Install Poetry
-        run: curl -sSL https://install.python-poetry.org | python3 -
-
-      - name: Install dependencies
-        run: poetry install
-
-      - name: Get latest version from PyPI
-        id: get_latest_version
-        run: |
-          latest_version=$(curl -s https://pypi.org/pypi/tonie_sync/json | jq -r .info.version)
-          echo "Latest version on PyPI: $latest_version"
-          echo "::set-output name=latest_version::$latest_version"
+      - name: Install uv
+        uses: astral-sh/setup-uv@v4
 
       - name: Build package
-        run: |
-          echo "Current version: ${{ steps.get_latest_version.outputs.latest_version }}"
-          poetry version ${{ steps.get_latest_version.outputs.latest_version }}
-          echo "Bumping version"
-          poetry version patch
-          poetry build
+        run: uv build
 
-      - name: Publish to PyPI
-        run: |
-          poetry config pypi-token.pypi ${{ secrets.PYPI_TOKEN }}
-          poetry publish
+      - name: Install dependencies
+        run: uv publish --token ${{ secrets.PYPI_TOKEN }}

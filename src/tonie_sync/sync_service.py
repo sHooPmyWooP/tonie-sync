@@ -1,44 +1,42 @@
 import logging
 import os
-from pathlib import Path
-
-from pydantic import BaseModel, EmailStr, field_validator
-from pydantic_settings import BaseSettings
 
 from .clients import SpotDLClient, TonieClient
 
 
-class SyncServiceConfig(BaseSettings):
-    spotify_client_id: str
-    spotify_client_secret: str
-    tonie_username: EmailStr
-    tonie_password: str
-    tonie_household: str
-    target_directory: Path
 
-    @field_validator("target_directory", mode="before")
-    def validate_target_directory(cls, v):
-        return Path(v)
-
-
-class SyncService(BaseModel):
-    config: SyncServiceConfig = SyncServiceConfig()
+class SyncService:
+    def __init__(
+        self,
+        spotify_client_id: str | None,
+        spotify_client_secret: str | None,
+        tonie_username: str | None,
+        tonie_password: str | None,
+        tonie_household: str | None,
+        target_directory: str | None,
+    ):
+        self.spotify_client_id = os.environ.get("spotify_client_id", spotify_client_id)
+        self.spotify_client_secret = os.environ.get("spotify_client_secret", spotify_client_secret)
+        self.tonie_username = os.environ.get("tonie_username", tonie_username)
+        self.tonie_password = os.environ.get("tonie_password", tonie_password)
+        self.tonie_household = os.environ.get("tonie_household", tonie_household)
+        self.target_directory = os.environ.get("target_directory", target_directory)
 
     def sync(self, creative_tonie_name: str, query: str):
         spotify_client = SpotDLClient(
-            client_id=self.config.spotify_client_id,
-            client_secret=self.config.spotify_client_secret,
-            target_directory=self.config.target_directory,
+            client_id=self.spotify_client_id,
+            client_secret=self.spotify_client_secret,
+            target_directory=self.target_directory,
         )
         tonie_client = TonieClient(
-            email=self.config.tonie_username,
-            password=self.config.tonie_password,
-            household=self.config.tonie_household,
+            email=self.tonie_username,
+            password=self.tonie_password,
+            household=self.tonie_household,
         )
 
-        if not os.path.exists(self.config.target_directory):
-            logging.info(f"Creating download folder {self.config.target_directory}")
-            os.makedirs(self.config.target_directory)
+        if not os.path.exists(self.target_directory):
+            logging.info(f"Creating download folder {self.target_directory}")
+            os.makedirs(self.target_directory)
 
         download_tracks_metadata = spotify_client.search_and_download(query=query)
 
