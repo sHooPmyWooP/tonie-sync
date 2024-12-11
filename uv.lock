@@ -912,8 +912,8 @@ wheels = [
 
 [[package]]
 name = "tonie-sync"
-version = "0.1.0"
-source = { virtual = "." }
+version = "0.1.6"
+source = { editable = "." }
 dependencies = [
     { name = "click" },
     { name = "ffmpy" },

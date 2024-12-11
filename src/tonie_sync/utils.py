@@ -17,6 +17,7 @@ def format_seconds(secs: int) -> str:
 
     Returns:
         A string representing the formatted duration.
+
     """
     val = math.floor(secs)
 

@@ -10,6 +10,10 @@ from ..models import SpotDLTrackMetadata
 
 
 class SpotDLClient:
+    """Wrapper for the SpotDL library."""
+
+    _spotdl = None
+
     def __init__(
         self,
         client_id: str,
@@ -20,11 +24,25 @@ class SpotDLClient:
         if not os.path.exists(target_directory):
             os.makedirs(target_directory)
         self.target_directory = target_directory
-        self.spotdl = Spotdl(client_id=client_id, client_secret=client_secret)
+        self.spotdl = self._spotdl or Spotdl(client_id=client_id, client_secret=client_secret)
         self.spotdl.downloader.settings["output"] = "{artists} - {title}.{output-ext}"
         self._logger = logging.getLogger(__name__)
 
     def search_and_download(self, query: list[str] | str) -> list[SpotDLTrackMetadata]:
+        """Search for songs on Spotify and download them.
+
+        Args:
+            query: The search query to find songs on Spotify.
+
+        Returns:
+            list[SpotDLTrackMetadata]: A list of SpotDLTrackMetadata objects for the downloaded songs.
+
+        Example:
+            >>> client.search_and_download("https://open.spotify.com/track/7ouMYWpwJ422jRcDASZB7P")
+            >>> Downloading [ 1/1 ] songs to [ 'music' ]
+            >>> SpotDLTrackMetadata(...)
+
+        """
         if isinstance(query, str):
             query = [query]
         sanitized_queries = []
@@ -51,7 +69,7 @@ class SpotDLClient:
         """Parse a Spotify URL or URI and return the ID and object type.
 
         Args:
-            search_input: The Spotify URL or URI to parse.
+            query: The Spotify URL or URI to parse.
 
         Returns:
             dict[str, str]: A dict with the Id and type of the object.
@@ -62,6 +80,7 @@ class SpotDLClient:
 
         Raises:
             ValueError: If no ID is found in the input.
+
         """
         OBJECT_TYPE_TO_BASE_URL = {
             "playlist": "https://open.spotify.com/playlist",
@@ -106,3 +125,34 @@ class SpotDLClient:
                 )
             )
         return metadata
+
+
+class SpotDLClientFactory:
+    """Factory for creating SpotDLClient instances.
+
+    The factory ensures that only one SpotDLClient instance is created.
+    """
+
+    _client = None
+
+    @staticmethod
+    def create(
+        client_id: str,
+        client_secret: str,
+        target_directory: Path,
+    ) -> SpotDLClient:
+        """Create a SpotDLClient instance.
+
+        Args:
+            client_id: The Spotify client ID.
+            client_secret: The Spotify client secret.
+            target_directory: The directory to save downloaded music files.
+
+        """
+        if SpotDLClientFactory._client is None:
+            SpotDLClientFactory._client = SpotDLClient(
+                client_id=client_id,
+                client_secret=client_secret,
+                target_directory=target_directory,
+            )
+        return SpotDLClientFactory._client

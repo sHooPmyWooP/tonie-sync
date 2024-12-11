@@ -25,6 +25,7 @@ class TonieClient:
 
         Raises:
             ValueError: If no household with the specified name is found.
+
         """
         household = next((x for x in self.api.get_households() if x.name == household_name), None)
         if household is None:
@@ -32,6 +33,7 @@ class TonieClient:
         return household
 
     def update_creative_tonie(self, creative_tonie_name: str, tracks_metadata: list[TrackMetadata]):
+        """Update a creative tonie with new tracks."""
         creative_tonie = self.get_creative_tonie_by_name(creative_tonie_name)
         track_file_names = [str(track.filename) for track in tracks_metadata]
         missing_chapters = self.remove_orphaned_chapters(creative_tonie, track_file_names)
@@ -50,6 +52,7 @@ class TonieClient:
 
         Raises:
             ValueError: If no CreativeTonie with the specified name is found in the household.
+
         """
         creative_tonie = next(
             (x for x in self.api.get_all_creative_tonies_by_household(self.household) if x.name == creative_tonie_name),
@@ -67,7 +70,9 @@ class TonieClient:
             track_file_names: The list of track file names to keep.
 
         Returns:
-            list[str]: The list of track file names that are missing on the creative tonie."""
+            list[str]: The list of track file names that are missing on the creative tonie.
+
+        """
         logging.info("Removing orphaned chapters from creative tonie...")
         chapters = creative_tonie.chapters
         chapters_to_keep = [chapter for chapter in chapters if chapter.title in track_file_names]
@@ -86,6 +91,12 @@ class TonieClient:
         return missing_chapters
 
     def sort_chapters(self, creative_tonie_name, tracks_metadata):
+        """Sort the chapters of a creative tonie.
+
+        Note:
+            Sorting also removes any chapters that are not in the list of tracks_metadata.
+
+        """
         logging.info("Sorting chapters...")
         chapters_sorted = False
         creative_tonie = self.get_creative_tonie_by_name(creative_tonie_name)
@@ -104,6 +115,7 @@ class TonieClient:
             logging.info("No sorting needed...")
 
     def upload_tracks_to_creative_tonie(self, creative_tonie_name, tracks_metadata: list[TrackMetadata]):
+        """Upload tracks to a creative tonie."""
         logging.info("Uploading new tracks / chapters...")
         for track_metadata in tracks_metadata:
             self.upload_track(creative_tonie_name, track_metadata)
@@ -113,6 +125,7 @@ class TonieClient:
         creative_tonie_name: str,
         track_metadata: TrackMetadata,
     ):
+        """Upload a track to a creative tonie."""
         creative_tonie = self.get_creative_tonie_by_name(creative_tonie_name)  # TODO: cache this
         chapters = creative_tonie.chapters
         tonie_seconds_remaining = creative_tonie.secondsRemaining

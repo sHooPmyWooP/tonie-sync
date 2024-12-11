@@ -1,11 +1,12 @@
 import logging
 import os
 
-from .clients import SpotDLClient, TonieClient
-
+from .clients import SpotDLClientFactory, TonieClient
 
 
 class SyncService:
+    """Responsible for syncing music from Spotify to a Toniebox."""
+
     def __init__(
         self,
         spotify_client_id: str | None,
@@ -21,13 +22,20 @@ class SyncService:
         self.tonie_password = os.environ.get("tonie_password", tonie_password)
         self.tonie_household = os.environ.get("tonie_household", tonie_household)
         self.target_directory = os.environ.get("target_directory", target_directory)
-
-    def sync(self, creative_tonie_name: str, query: str):
-        spotify_client = SpotDLClient(
+        self.spotify_client = SpotDLClientFactory.create(
             client_id=self.spotify_client_id,
             client_secret=self.spotify_client_secret,
             target_directory=self.target_directory,
         )
+
+    def sync(self, creative_tonie_name: str, query: str):
+        """Sync music from Spotify to a Toniebox.
+
+        Args:
+            creative_tonie_name: The name of the creative Tonie.
+            query: The search query to find songs on Spotify.
+
+        """
         tonie_client = TonieClient(
             email=self.tonie_username,
             password=self.tonie_password,
@@ -38,6 +46,6 @@ class SyncService:
             logging.info(f"Creating download folder {self.target_directory}")
             os.makedirs(self.target_directory)
 
-        download_tracks_metadata = spotify_client.search_and_download(query=query)
+        download_tracks_metadata = self.spotify_client.search_and_download(query=query)
 
         tonie_client.update_creative_tonie(creative_tonie_name, download_tracks_metadata)
