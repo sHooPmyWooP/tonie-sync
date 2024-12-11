@@ -1,4 +1,5 @@
 [project]
+    version = "0.1.7"
     authors = [
         {name = "Anonymous", email = "anonymous@xyz.com"},
     ]
@@ -15,7 +16,6 @@
         "spotdl<5.0.0,>=4.2.10",
 ]
     name = "tonie_sync"
-    version = "0.1.6"
     description = "A package to sync Spotify playlists to creative tonies."
     readme = "README.md"
 
