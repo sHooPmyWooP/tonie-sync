@@ -1,23 +1,40 @@
 {
-    "name": "tonie-sync-dev-environment",
-    "image": "mcr.microsoft.com/devcontainers/python:3.12",
+    "name": "uv",
+    "build": {
+        "context": "..",
+        "dockerfile": "Dockerfile",
+        "args": {
+            "UV_VERSION": "latest",
+            "DEBIAN_VERSION": "bookworm"
+        }
+    },
+    "features": {
+        "ghcr.io/dhoeric/features/hadolint:1": {}
+    },
     "customizations": {
         "vscode": {
             "extensions": [
-                "ms-python.python",
-                "samuelcolvin.jinjahtml",
-                "streetsidesoftware.code-spell-checker",
-                "christian-kohler.path-intellisense",
                 "charliermarsh.ruff",
-                "ms-python.mypy-type-checker",
+                "exiasr.hadolint",
+                "kevinrose.vsc-python-indent",
+                "mosapride.zenkaku",
+                "ms-azuretools.vscode-docker",
+                "ms-python.python",
+                "ms-python.vscode-pylance",
+                "njpwerner.autodocstring",
+                "redhat.vscode-yaml",
+                "shardulm94.trailing-spaces",
                 "tamasfe.even-better-toml",
                 "yzhang.markdown-all-in-one"
             ]
         }
     },
     "containerEnv": {
-        "POETRY_VIRTUALENVS_IN_PROJECT": "true"
+        "PYTHONUNBUFFERED": "True",
+        "UV_LINK_MODE": "copy",
+        "UV_PROJECT_ENVIRONMENT": "${containerWorkspaceFolder}/.venv"
     },
-    "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && pip install --user poetry pre-commit && pre-commit install && poetry install",
-    "postStartCommand": "sudo -s apt-get update && sudo -s apt-get -y upgrade && sudo -s apt-get --no-install-suggests --no-install-recommends -y install git tini ffmpeg lame curl zlib1g"
+    "postCreateCommand": "git config --global --add safe.directory ${containerWorkspaceFolder} && uv sync --frozen && sudo -s apt-get --no-install-suggests --no-install-recommends -y install git tini ffmpeg lame curl zlib1g",
+    "postStartCommand": "uv run pre-commit install",
+    "remoteUser": "root"
 }

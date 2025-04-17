@@ -1,4 +1,5 @@
 import logging
+import os
 import sys
 
 from .sync_service import SyncService
@@ -17,6 +18,11 @@ def main(query: str, creative_tonie_name: str):
 
 
 if __name__ == "__main__":
-    query = "https://open.spotify.com/playlist/2nvhh0bzHb6wdO1yNGZTaY"
-    creative_tonie_name = "Kreativ-Tonie"
+    query = os.environ.get("QUERY")
+    creative_tonie_name = os.environ.get("CREATIVE_TONIE_NAME")
+
+    if not query or not creative_tonie_name:
+        print("Please provide a query and a creative tonie name.")
+        sys.exit(1)
+
     main(query=query, creative_tonie_name=creative_tonie_name)

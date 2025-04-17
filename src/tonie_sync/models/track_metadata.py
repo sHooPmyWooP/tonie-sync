@@ -1,7 +1,8 @@
 import os
 from pathlib import Path
 
-from pydantic import BaseModel, field_validator
+import pytubefix
+from pydantic import BaseModel, ConfigDict, field_validator
 from spotdl.types.song import Song
 from spotdl.utils.formatter import create_file_name
 
@@ -52,6 +53,14 @@ class TrackMetadata(BaseModel):
         return os.path.join(self.download_root, self.filename)
 
 
+class YoutubeTrackMetadata(TrackMetadata):
+    """Metadata for a track downloaded from Youtube."""
+
+    model_config = ConfigDict(arbitrary_types_allowed=True)
+
+    youtube_stream: pytubefix.streams.Stream
+
+
 class SpotifyTrackMetadata(TrackMetadata):
     """Metadata for a track downloaded from Spotify."""
 
@@ -68,6 +77,7 @@ class SpotDLTrackMetadata(TrackMetadata):
         """Return the filename for the downloaded track.
 
         Note:
+        ----
             The filename is generated using the `create_file_name` function from SpotDL.
 
         """

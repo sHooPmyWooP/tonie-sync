@@ -1,38 +1,39 @@
 [project]
-    version = "0.1.9"
-    authors = [
-        {name = "Anonymous", email = "anonymous@xyz.com"},
-    ]
-    license = {text = "MIT"}
-    requires-python = "<3.14,>=3.10"
-    dependencies = [
-        "ffmpy<1.0.0,>=0.4.0",
-        "music-tag<1.0.0,>=0.4.3",
-        "pillow<11.0.0,>=10.4.0",
-        "protobuf==3.*",
-        "tqdm<5.0.0,>=4.66.4",
-        "tonie-api<1.0.0,>=0.1.1",
-        "click<9.0.0,>=8.1.7",
-        "spotdl<5.0.0,>=4.2.10",
+version = "0.1.10"
+authors = [{ name = "Anonymous", email = "anonymous@xyz.com" }]
+license = { text = "MIT" }
+requires-python = "<3.14,>=3.10"
+dependencies = [
+    "ffmpy<1.0.0,>=0.4.0",
+    "music-tag<1.0.0,>=0.4.3",
+    "pillow<11.0.0,>=10.4.0",
+    "protobuf==3.*",
+    "tqdm<5.0.0,>=4.66.4",
+    "tonie-api<1.0.0,>=0.1.1",
+    "click<9.0.0,>=8.1.7",
+    "spotdl<5.0.0,>=4.2.10",
+    "pytubefix>=8.12.3",
+    "ipykernel>=6.29.5",
 ]
-    name = "tonie_sync"
-    description = "A package to sync Spotify playlists to creative tonies."
-    readme = "README.md"
+name = "tonie_sync"
+description = "A package to sync Spotify playlists to creative tonies."
+readme = "README.md"
 
 [build-system]
-    requires = ["setuptools>=42", "wheel"]
-    build-backend = "setuptools.build_meta"
+requires = ["setuptools>=42", "wheel"]
+build-backend = "setuptools.build_meta"
 
 [project.urls]
-    homepage = "https://github.com/sHooPmyWooP/tonie-sync"
+homepage = "https://github.com/sHooPmyWooP/tonie-sync"
 
 [dependency-groups]
-    dev = [
-        "ruff<1.0.0,>=0.1.11",
-        "mypy<2.0.0,>=1.8.0",
-        "pytest<8.0.0,>=7.4.4",
-        "types-requests<3.0.0.0,>=2.32.0.20240712",
-    ]
+dev = [
+    "ruff<1.0.0,>=0.1.11",
+    "mypy<2.0.0,>=1.8.0",
+    "pytest<8.0.0,>=7.4.4",
+    "types-requests<3.0.0.0,>=2.32.0.20240712",
+    "pre-commit>=4.2.0",
+]
 
 [tool.ruff]
 exclude = ["notebooks"]
@@ -52,6 +53,6 @@ exclude = ["D212"]
 select = ["E4", "E7", "E9", "F", "B"]
 ignore = ["E501", "D100", "D104", "D105", "D107", "D203", "D213"]
 extend-select = [
-  "UP",  # pyupgrade
-  "D",   # pydocstyle
+    "UP", # pyupgrade
+    "D",  # pydocstyle
 ]

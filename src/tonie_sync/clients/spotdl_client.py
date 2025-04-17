@@ -32,12 +32,15 @@ class SpotDLClient:
         """Search for songs on Spotify and download them.
 
         Args:
+        ----
             query: The search query to find songs on Spotify.
 
         Returns:
+        -------
             list[SpotDLTrackMetadata]: A list of SpotDLTrackMetadata objects for the downloaded songs.
 
         Example:
+        -------
             >>> client.search_and_download("https://open.spotify.com/track/7ouMYWpwJ422jRcDASZB7P")
             >>> Downloading [ 1/1 ] songs to [ 'music' ]
             >>> SpotDLTrackMetadata(...)
@@ -45,11 +48,7 @@ class SpotDLClient:
         """
         if isinstance(query, str):
             query = [query]
-        sanitized_queries = []
-        for q in query:
-            sanitized_queries.append(self.sanitize_query(q))
-        self._logger.info("Searching for songs with query [ '%s' ]", sanitized_queries)
-        songs = self.spotdl.search(sanitized_queries)
+        songs = self.spotdl.search(query)
         songs_metadata = self._get_track_metadata(songs)
         songs_to_download = [
             song_metadata.song for song_metadata in songs_metadata if not os.path.exists(song_metadata.download_path)
@@ -69,16 +68,20 @@ class SpotDLClient:
         """Parse a Spotify URL or URI and return the ID and object type.
 
         Args:
+        ----
             query: The Spotify URL or URI to parse.
 
         Returns:
+        -------
             dict[str, str]: A dict with the Id and type of the object.
 
         Example:
+        -------
             >>> regex_input_for_urls('https://open.spotify.com/track/7ouMYWpwJ422jRcDASZB7P?si=abc123')
             >>> "track", "7ouMYWpwJ422jRcDASZB7P"
 
         Raises:
+        ------
             ValueError: If no ID is found in the input.
 
         """
@@ -87,6 +90,7 @@ class SpotDLClient:
             "track": "https://open.spotify.com/track",
             "episode_info": "https://open.spotify.com/episode",
             "show": "https://open.spotify.com/show",
+            "album": "https://open.spotify.com/album",
         }
         # Regular expression to match Spotify URLs and URIs
         pattern = re.compile(
@@ -144,6 +148,7 @@ class SpotDLClientFactory:
         """Create a SpotDLClient instance.
 
         Args:
+        ----
             client_id: The Spotify client ID.
             client_secret: The Spotify client secret.
             target_directory: The directory to save downloaded music files.
