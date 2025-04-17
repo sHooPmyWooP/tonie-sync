@@ -5,7 +5,6 @@ FROM python:$VARIANT-slim-$DEBIAN_VERSION
 
 WORKDIR /app
 
-ENV TONIE_SYNC_VERSION="0.1.12"
 ENV SPOTIFY_CLIENT_ID=
 ENV SPOTIFY_CLIENT_SECRET=
 ENV TONIE_USERNAME=
@@ -26,6 +25,6 @@ RUN apt-get update \
 COPY entrypoint.sh /app/entrypoint.sh
 RUN chmod +x /app/entrypoint.sh
 
-RUN pip install --no-cache-dir tonie_sync==$TONIE_SYNC_VERSION
+RUN pip install --no-cache-dir tonie_sync
 # Use the entrypoint script as the container's entry point
 ENTRYPOINT ["/app/entrypoint.sh"]
