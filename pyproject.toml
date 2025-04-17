@@ -12,8 +12,8 @@ dependencies = [
     "tonie-api<1.0.0,>=0.1.1",
     "click<9.0.0,>=8.1.7",
     "spotdl<5.0.0,>=4.2.10",
-    "pytubefix>=8.12.3",
     "ipykernel>=6.29.5",
+    "pytubefix>=8.12.3",
 ]
 name = "tonie_sync"
 description = "A package to sync Spotify playlists to creative tonies."
