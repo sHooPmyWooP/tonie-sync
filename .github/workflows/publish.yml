@@ -1,4 +1,4 @@
-name: Publish Package
+name: Publish Package and Docker Image
 
 on:
   push:
@@ -9,17 +9,17 @@ on:
       - main
 
 jobs:
-  build:
+  publish-and-docker:
     runs-on: ubuntu-latest
 
     steps:
       - name: Checkout code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.12'
+          python-version: "3.13"
 
       - name: Install uv
         uses: astral-sh/setup-uv@v4
@@ -36,3 +36,16 @@ jobs:
 
       - name: Publish package
         run: uv publish --token ${{ secrets.PYPI_TOKEN }}
+
+      - name: Log in to Docker Hub
+        uses: docker/login-action@v2
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_PAT }}
+
+      - name: Build and push Docker image
+        uses: docker/build-push-action@v4
+        with:
+          context: ./docker/
+          push: true
+          tags: shoopmywoop/shoopmywoop:latest
