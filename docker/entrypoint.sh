@@ -1,7 +1,7 @@
 #!/bin/sh
 
-: "${tonie_username:?Environment variable tonie_username is required}"
-: "${tonie_password:?Environment variable tonie_password is required}"
-: "${tonie_household:?Environment variable tonie_household is required}"
+: "${TONIE_USERNAME:?Environment variable TONIE_USERNAME is required}"
+: "${TONIE_PASSWORD:?Environment variable TONIE_PASSWORD is required}"
+: "${TONIE_HOUSEHOLD:?Environment variable TONIE_HOUSEHOLD is required}"
 
 exec python -m tonie_sync

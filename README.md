@@ -35,9 +35,9 @@ sync_service.sync(query=query, creative_tonie_name=creative_tonie_name)  # Sync 
 
 | Environment Variable  | Description                      | Example Value         |
 | --------------------- | -------------------------------- | --------------------- |
-| spotify_client_id     | Spotify account username         | 123456789             |
-| spotify_client_secret | Spotify account password         | this_is_very_secret   |
-| tonie_username        | Tonie account email              | my_email@provider.com |
-| tonie_password        | Tonie account password           | another_secret        |
-| tonie_household       | Name of the Tonie household      | My Household          |
-| target_directory      | Path to the local data directory | ./.local              |
+| SPOTIFY_CLIENT_ID     | Spotify account username         | 123456789             |
+| SPOTIFY_CLIENT_SECRET | Spotify account password         | this_is_very_secret   |
+| TONIE_USERNAME        | Tonie account email              | my_email@provider.com |
+| TONIE_PASSWORD        | Tonie account password           | another_secret        |
+| TONIE_HOUSEHOLD       | Name of the Tonie household      | My Household          |
+| TARGET_DIRECTORY      | Path to the local data directory | ./.local              |

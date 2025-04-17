@@ -19,12 +19,12 @@ class SyncService:
         tonie_household: str | None = None,
         target_directory: str = "./downloads/tonie_sync",
     ) -> None:
-        self.spotify_client_id = os.environ.get("spotify_client_id", spotify_client_id)
-        self.spotify_client_secret = os.environ.get("spotify_client_secret", spotify_client_secret)
-        self.tonie_username = os.environ.get("tonie_username", tonie_username)
-        self.tonie_password = os.environ.get("tonie_password", tonie_password)
-        self.tonie_household = os.environ.get("tonie_household", tonie_household)
-        self.target_directory = os.environ.get("target_directory", target_directory)
+        self.spotify_client_id = os.environ.get("SPOTIFY_CLIENT_ID", spotify_client_id)
+        self.spotify_client_secret = os.environ.get("SPOTIFY_CLIENT_SECRET", spotify_client_secret)
+        self.tonie_username = os.environ.get("TONIE_USERNAME", tonie_username)
+        self.tonie_password = os.environ.get("TONIE_PASSWORD", tonie_password)
+        self.tonie_household = os.environ.get("TONIE_HOUSEHOLD", tonie_household)
+        self.target_directory = os.environ.get("TARGET_DIRECTORY", target_directory)
         if not self.target_directory:
             self.target_directory = os.path.join(os.path.expanduser("~"), "Downloads", "tonie_sync")
 
