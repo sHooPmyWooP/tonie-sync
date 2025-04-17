@@ -19,7 +19,7 @@ def main(query: str, creative_tonie_name: str):
 
 if __name__ == "__main__":
     query = os.environ.get("QUERY")
-    creative_tonie_name = os.environ.get("CREATIVE_TONIE_NAME")
+    creative_tonie_name = os.environ.get("CREATIVE_TONIE")
 
     if not query or not creative_tonie_name:
         print("Please provide a query and a creative tonie name.")
