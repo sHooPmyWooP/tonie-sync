@@ -13,7 +13,7 @@ dependencies = [
     "click<9.0.0,>=8.1.7",
     "spotdl<5.0.0,>=4.2.10",
     "ipykernel>=6.29.5",
-    "pytubefix @ git+https://github.com/felipeucelli/pytubefix.git@new-player",
+    "pytubefix>=8.13.1",
 ]
 name = "tonie_sync"
 description = "A package to sync Spotify playlists to creative tonies."
