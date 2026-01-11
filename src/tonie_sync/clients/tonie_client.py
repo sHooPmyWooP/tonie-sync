@@ -77,10 +77,7 @@ class TonieClient:
         chapters = creative_tonie.chapters
         chapters_to_keep = [chapter for chapter in chapters if chapter.title in track_file_names]
         if chapters_to_keep:
-            logging.info(
-                f"Keeping chapters: {', '.join(
-                [chapter.title for chapter in chapters_to_keep])}"
-            )
+            logging.info(f"Keeping chapters: {', '.join([chapter.title for chapter in chapters_to_keep])}")
             self.api.sort_chapter_of_tonie(creative_tonie, chapters_to_keep)
             chapter_titles = [chapter.title for chapter in chapters]
             missing_chapters = [track for track in track_file_names if track not in chapter_titles]
