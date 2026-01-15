@@ -67,7 +67,7 @@ class YoutubeClient:
                 track = YouTube(query, "WEB")
                 track_metadata = YoutubeTrackMetadata(
                     artists=[track.author],
-                    # download_root=self.target_directory,
+                    download_root=self.target_directory,
                     name=track.title,
                     duration_ms=track.length * 1000,  # convert to ms
                     album_name=None,
